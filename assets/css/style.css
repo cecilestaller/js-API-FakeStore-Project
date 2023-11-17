@@ -1,0 +1,28 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  margin: 2%;
+  text-align: center;
+}
+body header .user_input_wrapper form {
+  margin-block: 2vh;
+}
+body header .user_input_wrapper .filter_by_categories {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+body main .product_gallery {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+body main .product_gallery div figure img {
+  max-width: 70%;
+}
+
+/*# sourceMappingURL=style.css.map */

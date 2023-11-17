@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Super Fake Stor - API_Project</title>
+    <link rel="stylesheet" href="./assets/css/style.css">
+</head>
+<body>
+    <header>
+        <h1>Super Fake Store</h1>
+        <section class="user_input_wrapper">
+            <form onsubmit="return false">
+                <input type="text" name="userInput" id="user-search-input" oninput="searchByTitle()" placeholder="Search by title">
+                <select name="" id="sort-input" value="" onchange="sortProductsByPrice()">
+                    <option value="" disabled selected>Sort by</option>
+                    <option value="asc">Price - Low to High</option>
+                    <option value="desc">Price - High to Low</option>
+                </select>
+            </form>
+            <section class="filter_by_categories">
+                <p>Filter by Categories</p>
+                <button onclick="filterByCategorie(electronics)">electronics</button>
+                <button onclick="filterByCategorie(jewelery)">jewelery</button>
+                <button onclick="filterByCategorie(mensclothing)">men's clothing</button>
+                <button onclick="filterByCategorie(womensclothing)">women's clothing</button>
+            </section>
+        </section>
+    </header>
+    <main>
+        <section id="product-gallery" class="product_gallery"></section>
+    </main>
+    <script src="./assets/js/main.js"></script>
+</body>
+</html>
