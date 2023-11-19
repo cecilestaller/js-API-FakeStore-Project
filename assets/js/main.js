@@ -2,10 +2,10 @@
 const gallerySection = document.getElementById('product-gallery')
 let arrayWithAllObjects = [];
 
+// ===> FETCH ALL PRODUCTS
 const requestAllProductsFetch = () => {
     fetch('https://fakestoreapi.com/products')
     .then(response => {
-        // console.log(response);
         if(response.ok){
             return response.json();
         } else {
@@ -13,12 +13,13 @@ const requestAllProductsFetch = () => {
         }
     })
     .then(data => {
-        // console.log(data);
+        console.log(data);
         data.forEach((singleProduct) => {
-            // console.log(singleProduct);
             renderProducts(singleProduct); // ==> gibt die Produkte AUS
             arrayWithAllObjects.push(singleProduct); // ==> "kopiert" einzelne Objects in neues Array 
+            
         })
+        sortProductsByPrice(data);
     })
     .catch(error => console.log(error));
 }
@@ -27,7 +28,6 @@ requestAllProductsFetch()
 
 // ===> function um products zu ERSTELLEN
 const renderProducts = (product) => {
-    // console.log(product);
     // elemente erstellen
     const createdDiv = document.createElement('div');
     const createdFigure = document.createElement('figure');
@@ -35,6 +35,7 @@ const renderProducts = (product) => {
     const createdTitel = document.createElement('figcaption');
     const createdPrice = document.createElement('h3');
     const createdButton = document.createElement('button');
+    const createdArticle = document.createElement('article')
 
     // image attribute
     createdImage.setAttribute('src', product.image);
@@ -42,54 +43,95 @@ const renderProducts = (product) => {
     // figcaption titel vergeben
     createdTitel.textContent = product.title;
     // price vergeben
-    createdPrice.textContent = product.price;
+    createdPrice.textContent = `${product.price} $`;
     // button text
     createdButton.textContent = "Add to Cart";
 
     // child elements an parent elements hängen
     createdFigure.append(createdImage, createdTitel)
-    createdDiv.append(createdFigure, createdPrice, createdButton);
+    createdArticle.append(createdPrice, createdButton)
+    createdDiv.append(createdFigure, createdArticle);
     gallerySection.appendChild(createdDiv)
 }
 
 // ===> SORTIEREN
-const sortProductsByPrice = () => {
-    // console.log(arrayWithAllObjects);
+const sortProductsByPrice = (productsToBeSorted) => {
     const selectOptions = document.getElementById('sort-input');
-    const selectedIndexValue = selectOptions.value;
-    // console.log(selectedIndexValue);
-    gallerySection.innerHTML = '';
+    selectOptions.addEventListener("change", () => {
+        const selectedIndexValue = selectOptions.value;
+        gallerySection.innerHTML = '';
 
-    if(selectedIndexValue === "asc"){
-        arrayWithAllObjects.sort((productA, productB) => productA.price - productB.price);
-        // console.log(arrayWithAllObjects);
-    } else if (selectedIndexValue === "desc") {
-        arrayWithAllObjects.sort((productA, productB) => productB.price - productA.price);
-    }
-    arrayWithAllObjects.forEach((sortedProduct) => {
-    renderProducts(sortedProduct)
+        if(selectedIndexValue === "asc"){
+            productsToBeSorted.sort((productA, productB) => productA.price - productB.price);
+            // console.log(arrayWithAllObjects);
+        } else if (selectedIndexValue === "desc") {
+            productsToBeSorted.sort((productA, productB) => productB.price - productA.price);
+        }
+        productsToBeSorted.forEach((sortedProduct) => {
+            renderProducts(sortedProduct)
+        })
     })
 }
 
 // ===> SUCHEN
-// !! TO DO: mit sort function verknüpfen
 const searchByTitle = () => {
     const userSearchInput = document.getElementById('user-search-input').value.trim();
-    console.log(userSearchInput);
     gallerySection.innerHTML = '';
-
     const userSearchMatches = arrayWithAllObjects.filter((filteredProduct) => {
-        console.log(filteredProduct);
+        
         if(filteredProduct.title.toLowerCase().includes(userSearchInput.toLowerCase())){
             return filteredProduct
         }
-        // sortProductsByPrice(filteredProduct);
     })
     userSearchMatches.forEach((productMatch) => {
         renderProducts(productMatch);
-        
     })
+    sortProductsByPrice(userSearchMatches);
 }
 
 // ==> Filter CATEGORIES
-console.log(arrayWithAllObjects);
+const filterByCategories = (category) => {
+    gallerySection.innerHTML = '';
+
+    if(category === 'electronics'){
+        const userFilterByCategory = arrayWithAllObjects.filter((productByCategory) => {
+            if(productByCategory.category === "electronics"){
+                return productByCategory
+            }
+        }) 
+        userFilterByCategory.forEach((categoryMatch) => {
+            renderProducts(categoryMatch);
+        })
+        sortProductsByPrice(userFilterByCategory);
+    } else if (category === 'jewelery'){
+        const userFilterByCategory = arrayWithAllObjects.filter((productByCategory) => {
+            if(productByCategory.category === "jewelery"){
+                return productByCategory
+            }
+        }) 
+        userFilterByCategory.forEach((categoryMatch) => {
+            renderProducts(categoryMatch);
+        })
+        sortProductsByPrice(userFilterByCategory);
+    } else if (category === `men's clothing`){
+        const userFilterByCategory = arrayWithAllObjects.filter((productByCategory) => {
+            if(productByCategory.category === "men's clothing"){
+                return productByCategory
+            }
+        }) 
+        userFilterByCategory.forEach((categoryMatch) => {
+            renderProducts(categoryMatch);
+        })
+        sortProductsByPrice(userFilterByCategory);
+    } else if (category === `women's clothing`){
+        const userFilterByCategory = arrayWithAllObjects.filter((productByCategory) => {
+            if(productByCategory.category === "women's clothing"){
+                return productByCategory
+            }
+        }) 
+        userFilterByCategory.forEach((categoryMatch) => {
+            renderProducts(categoryMatch);
+        })
+        sortProductsByPrice(userFilterByCategory);
+    }
+}
